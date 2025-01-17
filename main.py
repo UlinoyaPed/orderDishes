@@ -3,7 +3,7 @@ import sys
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication
 
-import MainWindow
+import mainWindow
 
 if __name__ == '__main__':
     # 高DPI
@@ -13,6 +13,6 @@ if __name__ == '__main__':
 
     # 启动
     app = QApplication(sys.argv)
-    w = MainWindow.MainWindow()
+    w = mainWindow.MainWindow()
     w.show()
     app.exec()
