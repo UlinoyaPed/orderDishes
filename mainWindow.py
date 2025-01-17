@@ -1,9 +1,11 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QVBoxLayout
-from qfluentwidgets import FluentIcon, NavigationItemPosition, MSFluentWindow, ScrollArea
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QApplication
+from qfluentwidgets import FluentIcon, NavigationItemPosition, MSFluentWindow, ScrollArea, OptionsSettingCard, qconfig
 
+import dishes
+from config import MyConfig
 from myIcons import MyIcon
-from widgets import homepage
+from widgets import homepage, orderpage
 
 
 class BaseInterface(ScrollArea):
@@ -30,9 +32,8 @@ class HomeInterface(BaseInterface):
         super().__init__(parent=parent)
         self.setObjectName("home")
 
-        self.appCard = homepage.AppInfoCard(self)
-
     def add_items(self):
+        self.appCard = homepage.AppInfoCard()
         self.vBoxLayout.addWidget(self.appCard, 0, Qt.AlignTop)
 
 
@@ -41,11 +42,26 @@ class OrderInterface(BaseInterface):
         super().__init__(parent=parent)
         self.setObjectName("order")
 
+    def add_items(self):
+        self.dCard = orderpage.DishCard(dishes.burger)
+        self.vBoxLayout.addWidget(self.dCard, 0, Qt.AlignTop)
+
 
 class SettingsInterface(BaseInterface):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setObjectName("settings")
+
+    def add_items(self):
+        self.switch_dark_mode_card = OptionsSettingCard(
+            MyConfig.themeMode,
+            FluentIcon.BRUSH,
+            "应用主题",
+            "调整你的应用外观",
+            texts=["浅色", "深色", "跟随系统设置"],
+        )
+        self.vBoxLayout.addWidget(self.switch_dark_mode_card, 0, Qt.AlignTop)
+
 
 
 class MainWindow(MSFluentWindow):
@@ -55,6 +71,10 @@ class MainWindow(MSFluentWindow):
         # 界面初始化
         self.setWindowTitle("点餐系统")
         self.setMinimumSize(800, 600)
+        self.resize(1200, 800)
+        desktop = QApplication.desktop().availableGeometry()
+        w, h = desktop.width(), desktop.height()
+        self.move(w // 2 - self.width() // 2, h // 2 - self.height() // 2)
         self.setWindowIcon(MyIcon.Burger.icon())  # 设置图标
 
         # 添加界面
