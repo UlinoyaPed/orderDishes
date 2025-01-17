@@ -6,30 +6,43 @@ from myIcons import MyIcon
 from widgets import homepage
 
 
-class Home(ScrollArea):
+class BaseInterface(ScrollArea):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.setObjectName("home")
+        self.setObjectName("base")
         self.view = QWidget(self)
 
         self.vBoxLayout = QVBoxLayout(self.view)
-        self.vBoxLayout.setContentsMargins(0, 0, 0, 30)
+        self.vBoxLayout.setContentsMargins(5, 5, 5, 10)
 
-        self.appCard = homepage.AppInfoCard(self)
-        self.vBoxLayout.addWidget(self.appCard, 0, Qt.AlignTop)
+        self.add_items()
 
         self.setWidgetResizable(True)
         self.enableTransparentBackground()
         self.setWidget(self.view)
 
+    def add_items(self):
+        pass
 
-class OrderFrame(ScrollArea):
+
+class HomeInterface(BaseInterface):
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
+        self.setObjectName("home")
+
+        self.appCard = homepage.AppInfoCard(self)
+
+    def add_items(self):
+        self.vBoxLayout.addWidget(self.appCard, 0, Qt.AlignTop)
+
+
+class OrderInterface(BaseInterface):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setObjectName("order")
 
 
-class Settings(ScrollArea):
+class SettingsInterface(BaseInterface):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setObjectName("settings")
@@ -45,9 +58,11 @@ class MainWindow(MSFluentWindow):
         self.setWindowIcon(MyIcon.Burger.icon())  # 设置图标
 
         # 添加界面
-        self.homeInterface = Home()
-        self.orderInterface = OrderFrame()
-        self.settingsInterface = Settings()
+        self.homeInterface = HomeInterface()
+        self.orderInterface = OrderInterface()
+        self.settingsInterface = SettingsInterface()
+
+        self.homeInterface.appCard.set_switch_to_order(self, self.orderInterface)
 
         self.addSubInterface(self.homeInterface, FluentIcon.HOME, "主页",
                              position=NavigationItemPosition.TOP)  # TOP是指在导航栏的最上方
