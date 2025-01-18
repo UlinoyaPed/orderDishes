@@ -5,14 +5,26 @@ from qfluentwidgets import ElevatedCardWidget, IconWidget, TitleLabel, CardWidge
 
 from dishes import Dish
 
+order_dict = {}
+
+
+# class OrderInfo:
+#     dish: Dish
+#     num: int = 0
+#
+#     def __init__(self, dish: Dish, num: int):
+#         self.dish = dish
+#         self.num = num
+
 
 class AddOrSubtractWidget(ElevatedCardWidget):
-    def __init__(self, parent=None):
+    def __init__(self, dish, parent=None):
         super().__init__(parent)
         self.setFixedSize(150, 50)
         self.setContentsMargins(0, 0, 0, 0)
         self.hBox = QHBoxLayout(self)
 
+        self.dish = dish
         self.num: int = 0
 
         self.subtract_button = TransparentToolButton(FluentIcon.REMOVE.icon())
@@ -31,6 +43,7 @@ class AddOrSubtractWidget(ElevatedCardWidget):
         if self.num < 0:
             self.num = 0
         self.number_label.setText(str(self.num))
+        order_dict[self.dish] = self.num
 
     def get_num(self):
         return self.num
@@ -51,7 +64,7 @@ class DishCard(CardWidget):
 
         self.priceLabel = SubtitleLabel(f'¥{self.dish.price:.2f}/{self.dish.unit}')
 
-        self.add_or_subtract_widget = AddOrSubtractWidget()
+        self.add_or_subtract_widget = AddOrSubtractWidget(self.dish)
 
         self.hBox = QHBoxLayout(self)
         self.hBox.addWidget(self.iconWidget, 0, QtCore.Qt.AlignVCenter | QtCore.Qt.AlignLeft)

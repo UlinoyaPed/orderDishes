@@ -6,7 +6,7 @@ from qfluentwidgets import FluentIcon, NavigationItemPosition, MSFluentWindow, S
 import dishes
 from config import MyConfig
 from myIcons import MyIcon
-from widgets import homepage, orderpage
+from widgets import homepage, orderpage, checkoutpage
 
 
 class BaseInterface(ScrollArea):
@@ -59,6 +59,16 @@ class OrderInterface(ScrollArea):
             self.layout.addWidget(dCard)
 
 
+class CheckoutInterface(BaseInterface):
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
+        self.setObjectName("checkout")
+
+    def add_items(self):
+        self.checkout_card = checkoutpage.CheckoutCard()
+        self.layout.addWidget(self.checkout_card, 0, Qt.AlignTop)
+
+
 class SettingsInterface(BaseInterface):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -73,7 +83,6 @@ class SettingsInterface(BaseInterface):
             texts=["浅色", "深色", "跟随系统设置"],
         )
         self.layout.addWidget(self.switch_dark_mode_card, 0, Qt.AlignTop)
-
 
 
 class MainWindow(MSFluentWindow):
@@ -92,6 +101,7 @@ class MainWindow(MSFluentWindow):
         # 添加界面
         self.homeInterface = HomeInterface()
         self.orderInterface = OrderInterface()
+        self.checkoutInterface = CheckoutInterface()
         self.settingsInterface = SettingsInterface()
 
         self.homeInterface.appCard.set_switch_to_order(self, self.orderInterface)
@@ -99,6 +109,8 @@ class MainWindow(MSFluentWindow):
         self.addSubInterface(self.homeInterface, FluentIcon.HOME, "主页",
                              position=NavigationItemPosition.TOP)  # TOP是指在导航栏的最上方
         self.addSubInterface(self.orderInterface, FluentIcon.ADD, "点餐",
+                             position=NavigationItemPosition.SCROLL)
+        self.addSubInterface(self.checkoutInterface, FluentIcon.ACCEPT, "结账",
                              position=NavigationItemPosition.SCROLL)
         self.addSubInterface(self.settingsInterface, FluentIcon.SETTING, "设置",
                              position=NavigationItemPosition.BOTTOM)  # BOTTOM是指在导航栏的最下方
