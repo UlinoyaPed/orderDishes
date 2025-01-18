@@ -1,6 +1,7 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QApplication
-from qfluentwidgets import FluentIcon, NavigationItemPosition, MSFluentWindow, ScrollArea, OptionsSettingCard, qconfig
+from qfluentwidgets import FluentIcon, NavigationItemPosition, MSFluentWindow, ScrollArea, OptionsSettingCard, \
+    FlowLayout
 
 import dishes
 from config import MyConfig
@@ -12,10 +13,10 @@ class BaseInterface(ScrollArea):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setObjectName("base")
-        self.view = QWidget(self)
+        self.view = QWidget()
 
-        self.vBoxLayout = QVBoxLayout(self.view)
-        self.vBoxLayout.setContentsMargins(5, 5, 5, 10)
+        self.layout = QVBoxLayout(self.view)
+        self.layout.setContentsMargins(5, 5, 5, 10)
 
         self.add_items()
 
@@ -34,17 +35,28 @@ class HomeInterface(BaseInterface):
 
     def add_items(self):
         self.appCard = homepage.AppInfoCard()
-        self.vBoxLayout.addWidget(self.appCard, 0, Qt.AlignTop)
+        self.layout.addWidget(self.appCard, 0, Qt.AlignTop)
 
 
-class OrderInterface(BaseInterface):
+class OrderInterface(ScrollArea):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setObjectName("order")
+        self.view = QWidget()
+
+        self.layout = FlowLayout(self.view)
+        self.layout.setContentsMargins(5, 5, 5, 10)
+
+        self.add_items()
+
+        self.setWidgetResizable(True)
+        self.enableTransparentBackground()
+        self.setWidget(self.view)
 
     def add_items(self):
-        self.dCard = orderpage.DishCard(dishes.burger)
-        self.vBoxLayout.addWidget(self.dCard, 0, Qt.AlignTop)
+        for dish in dishes.all_dishes:
+            dCard = orderpage.DishCard(dish)
+            self.layout.addWidget(dCard)
 
 
 class SettingsInterface(BaseInterface):
@@ -60,7 +72,7 @@ class SettingsInterface(BaseInterface):
             "调整你的应用外观",
             texts=["浅色", "深色", "跟随系统设置"],
         )
-        self.vBoxLayout.addWidget(self.switch_dark_mode_card, 0, Qt.AlignTop)
+        self.layout.addWidget(self.switch_dark_mode_card, 0, Qt.AlignTop)
 
 
 
@@ -71,7 +83,7 @@ class MainWindow(MSFluentWindow):
         # 界面初始化
         self.setWindowTitle("点餐系统")
         self.setMinimumSize(800, 600)
-        self.resize(1200, 800)
+        # self.resize(1100, 800)
         desktop = QApplication.desktop().availableGeometry()
         w, h = desktop.width(), desktop.height()
         self.move(w // 2 - self.width() // 2, h // 2 - self.height() // 2)
