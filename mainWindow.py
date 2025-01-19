@@ -54,11 +54,13 @@ class OrderInterface(ScrollArea):
         self.setWidget(self.view)
 
     def add_items(self):
+        self.goto_checkout_widget = orderpage.GotoCheckOutWidget()
+
         for dish in dishes.all_dishes:
             dCard = orderpage.DishCard(dish)
+            dCard.set_update_func(self.goto_checkout_widget.update_order_info)
             self.layout.addWidget(dCard)
 
-        self.goto_checkout_widget = orderpage.GotoCheckOutWidget()
         self.layout.addWidget(self.goto_checkout_widget)
 
 

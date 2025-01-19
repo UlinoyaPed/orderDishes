@@ -29,6 +29,8 @@ class AddOrSubtractWidget(ElevatedCardWidget):
         self.subtract_button.clicked.connect(lambda: self.change_num(-1))
         self.add_button.clicked.connect(lambda: self.change_num(1))
 
+        self.update_func = None
+
     def change_num(self, change):
         self.num += change
         if self.num < 0:
@@ -36,8 +38,14 @@ class AddOrSubtractWidget(ElevatedCardWidget):
         self.number_label.setText(str(self.num))
         order_dict[self.dish] = self.num
 
+        if self.update_func is not None:
+            self.update_func()
+
     def get_num(self):
         return self.num
+
+    def set_update_func(self, func):
+        self.update_func = func
 
 
 class DishCard(CardWidget):
@@ -58,6 +66,7 @@ class DishCard(CardWidget):
         self.descriptionLabel = StrongBodyLabel(self.dish.description)
 
         self.add_or_subtract_widget = AddOrSubtractWidget(self.dish)
+        self.update_order_info = None
 
         self.hBox = QHBoxLayout(self)
         self.hBox.addWidget(self.iconWidget, 0, QtCore.Qt.AlignVCenter | QtCore.Qt.AlignLeft)
@@ -72,6 +81,9 @@ class DishCard(CardWidget):
 
         self.nameLabel.setAlignment(QtCore.Qt.AlignBottom | QtCore.Qt.AlignHCenter)
 
+    def set_update_func(self, func):
+        self.update_order_info = func
+        self.add_or_subtract_widget.set_update_func(self.update_order_info)
 
 class OrderedDishCard(ElevatedCardWidget):
     def __init__(self, dish: Dish, num: int, parent=None):
