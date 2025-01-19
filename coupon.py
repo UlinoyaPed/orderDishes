@@ -5,6 +5,7 @@ class CouponBase:
     """
     优惠券基类
     """
+
     def __init__(self, name):
         """
         初始化优惠券
@@ -12,6 +13,7 @@ class CouponBase:
         """
         self.name = name
         self.total_price: float = 0
+        self.is_used = False
 
     def apply(self, order: dict) -> float:
         """
@@ -21,7 +23,20 @@ class CouponBase:
         """
         raise NotImplementedError
 
+    def check_if_can_apply(self, order: dict) -> bool:
+        """
+        检查是否可以应用优惠券
+        :param order: 订单
+        :return: bool 是否可以应用
+        """
+        raise NotImplementedError
+
     def calculate_total_price(self, order: dict):
+        """
+        计算总价
+        :param order: 订单
+        :return:
+        """
         self.total_price = 0
         for dish, num in order.items():
             if not isinstance(dish, Dish):  # 防止出现非菜品的情况
@@ -46,17 +61,23 @@ class FullReduceCoupon(CouponBase):
         self.full = full
         self.reduce = reduce
 
-    def apply(self, order):
+    def check_if_can_apply(self, order):
         self.calculate_total_price(order)
-        total = self.total_price
-        if total >= self.full:
-            return total - self.reduce
-        return total
+        if self.total_price >= self.full:
+            return True
+        return False
+
+    def apply(self, order):
+        if self.check_if_can_apply(order):
+            self.is_used = True  # 标记为已使用
+            return self.total_price - self.reduce
+        else:
+            return self.total_price
 
 
 class PercentReduceCoupon(CouponBase):
     """
-    折扣券
+    无条件折扣券
     """
 
     def __init__(self, name, percent: float):
@@ -73,15 +94,53 @@ class PercentReduceCoupon(CouponBase):
             raise ValueError('percent must be greater than 0')
         self.percent = percent
 
-    def apply(self, order):
+    def check_if_can_apply(self, order):
         self.calculate_total_price(order)
-        total = self.total_price
-        return total * (1 - self.percent)
+        return True
+
+    def apply(self, order):
+        if self.check_if_can_apply(order):
+            self.is_used = True  # 标记为已使用
+            return self.total_price * (1 - self.percent)
+        else:
+            return self.total_price
+
+
+class FullPercentReduceCoupon(PercentReduceCoupon):
+    """
+    满减折扣券 满多少才打折扣
+    """
+
+    def __init__(self, name, full: float, percent: float):
+        """
+        初始化满减折扣券
+        注意填的是折扣比例，比如打八折填0.2
+        :param name: 名称
+        :param full: 满多少元
+        :param percent: 折扣比例 0-1
+        """
+        super().__init__(name, percent)
+        if full < 0:
+            raise ValueError('full must be greater than 0')
+        self.full = full
+
+    def check_if_can_apply(self, order):
+        self.calculate_total_price(order)
+        if self.total_price >= self.full:
+            return True
+        return False
+
+    def apply(self, order):
+        if self.check_if_can_apply(order):
+            self.is_used = True  # 标记为已使用
+            return self.total_price * (1 - self.percent)
+        else:
+            return self.total_price
 
 
 class VoucherCoupon(CouponBase):
     """
-    代金券
+    无条件代金券
     """
 
     def __init__(self, name, voucher: float):
@@ -95,10 +154,19 @@ class VoucherCoupon(CouponBase):
             raise ValueError('voucher must be greater than 0')
         self.voucher = voucher
 
-    def apply(self, order):
+    def check_if_can_apply(self, order):
         self.calculate_total_price(order)
-        total = self.total_price
-        total -= self.voucher
-        if total < 0:
-            return 0
-        return total
+        return True
+
+    def apply(self, order):
+        if self.check_if_can_apply(order):
+            self.is_used = True  # 标记为已使用
+            return self.total_price - self.voucher
+        else:
+            return self.total_price
+
+
+all_coupons = [FullReduceCoupon('满100减10券', 100, 10),
+               PercentReduceCoupon('8折券', 0.2),
+               VoucherCoupon('10元代金券', 10),
+               FullPercentReduceCoupon('满100打8折券', 100, 0.2)]
