@@ -12,8 +12,8 @@ class Dish:
         self.unit = unit
 
 
-beer = Dish('啤酒', 5.78, MyIcon.Beer.icon(), '听')
-burger = Dish('汉堡', 10.9, MyIcon.Burger.icon())
+beer = Dish('啤酒', 5.78, MyIcon.Beer.icon(), '听', '精酿小麦果汁')
+burger = Dish('汉堡', 10.9, MyIcon.Burger.icon(), description='经典汉堡')
 chips = Dish('薯条', 8.99, MyIcon.Chips.icon())
 donut = Dish('甜甜圈', 3.5, MyIcon.Donut.icon())
 ice_cream = Dish('冰淇淋', 6.99, MyIcon.IceCream.icon())

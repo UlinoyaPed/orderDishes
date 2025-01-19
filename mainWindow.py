@@ -58,6 +58,9 @@ class OrderInterface(ScrollArea):
             dCard = orderpage.DishCard(dish)
             self.layout.addWidget(dCard)
 
+        self.goto_checkout_widget = orderpage.GotoCheckOutWidget()
+        self.layout.addWidget(self.goto_checkout_widget)
+
 
 class CheckoutInterface(BaseInterface):
     def __init__(self, parent=None):
@@ -92,7 +95,7 @@ class MainWindow(MSFluentWindow):
         # 界面初始化
         self.setWindowTitle("点餐系统")
         self.setMinimumSize(800, 600)
-        # self.resize(1100, 800)
+        self.resize(1100, 800)
         desktop = QApplication.desktop().availableGeometry()
         w, h = desktop.width(), desktop.height()
         self.move(w // 2 - self.width() // 2, h // 2 - self.height() // 2)
