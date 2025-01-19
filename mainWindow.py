@@ -1,3 +1,10 @@
+"""
+    主窗口
+    包含主界面和设置界面
+    主界面包含主页、点餐、结算三个界面
+    设置界面包含主题切换、关于等选项
+"""
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QApplication
 from qfluentwidgets import FluentIcon, NavigationItemPosition, MSFluentWindow, ScrollArea, OptionsSettingCard, \
@@ -10,6 +17,11 @@ from widgets import homepage, orderpage, checkoutpage
 
 
 class BaseInterface(ScrollArea):
+    """
+    基础界面
+    包含一个垂直布局
+    用于添加各种组件
+    """
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setObjectName("base")
@@ -29,6 +41,9 @@ class BaseInterface(ScrollArea):
 
 
 class HomeInterface(BaseInterface):
+    """
+    主页界面
+    """
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setObjectName("home")
@@ -39,6 +54,9 @@ class HomeInterface(BaseInterface):
 
 
 class OrderInterface(ScrollArea):
+    """
+    点餐界面
+    """
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setObjectName("order")
@@ -65,6 +83,9 @@ class OrderInterface(ScrollArea):
 
 
 class CheckoutInterface(BaseInterface):
+    """
+    结算界面
+    """
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setObjectName("checkout")
@@ -75,6 +96,9 @@ class CheckoutInterface(BaseInterface):
 
 
 class SettingsInterface(BaseInterface):
+    """
+    设置界面
+    """
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setObjectName("settings")
@@ -91,6 +115,9 @@ class SettingsInterface(BaseInterface):
 
 
 class MainWindow(MSFluentWindow):
+    """
+    主窗口
+    """
     def __init__(self):
         super().__init__()
 
@@ -98,23 +125,23 @@ class MainWindow(MSFluentWindow):
         self.setWindowTitle("点餐系统")
         self.setMinimumSize(800, 600)
         self.resize(1100, 800)
-        desktop = QApplication.desktop().availableGeometry()
-        w, h = desktop.width(), desktop.height()
-        self.move(w // 2 - self.width() // 2, h // 2 - self.height() // 2)
+        desktop = QApplication.desktop().availableGeometry()  # 获取屏幕大小
+        w, h = desktop.width(), desktop.height()  # 获取屏幕宽和高
+        self.move(w // 2 - self.width() // 2, h // 2 - self.height() // 2)  # 移动窗口居中
         self.setWindowIcon(MyIcon.Burger.icon())  # 设置图标
 
         # 添加界面
-        self.homeInterface = HomeInterface()
-        self.orderInterface = OrderInterface()
-        self.checkoutInterface = CheckoutInterface()
-        self.settingsInterface = SettingsInterface()
+        self.homeInterface = HomeInterface()  # 主页界面
+        self.orderInterface = OrderInterface()  # 点餐界面
+        self.checkoutInterface = CheckoutInterface()  # 结算界面
+        self.settingsInterface = SettingsInterface()  # 设置界面
 
-        self.homeInterface.appCard.set_switch_to_order(self, self.orderInterface)
+        self.homeInterface.appCard.set_switch_to_order(self, self.orderInterface)  # 设置主页界面的切换到点餐界面
 
         self.addSubInterface(self.homeInterface, FluentIcon.HOME, "主页",
                              position=NavigationItemPosition.TOP)  # TOP是指在导航栏的最上方
         self.addSubInterface(self.orderInterface, FluentIcon.ADD, "点餐",
-                             position=NavigationItemPosition.SCROLL)
+                             position=NavigationItemPosition.SCROLL)  # SCROLL是指在导航栏的中间
         self.addSubInterface(self.checkoutInterface, FluentIcon.ACCEPT, "结账",
                              position=NavigationItemPosition.SCROLL)
         self.addSubInterface(self.settingsInterface, FluentIcon.SETTING, "设置",

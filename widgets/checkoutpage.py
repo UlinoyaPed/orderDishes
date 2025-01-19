@@ -1,3 +1,9 @@
+"""
+    结账界面组件
+    包括：
+        结账卡片
+"""
+
 from qfluentwidgets import SimpleCardWidget, TitleLabel, PrimaryPushButton
 
 from widgets import orderpage

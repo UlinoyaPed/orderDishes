@@ -1,3 +1,10 @@
+"""
+    图标
+    包括：
+        所有的自定义图标
+"""
+
+
 from enum import Enum
 
 from PyQt5.QtGui import QIcon

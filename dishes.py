@@ -1,3 +1,7 @@
+"""
+    所有菜品
+"""
+
 from PyQt5.QtGui import QIcon
 
 from myIcons import MyIcon
@@ -17,9 +21,9 @@ burger = Dish('汉堡', 10.9, MyIcon.Burger.icon(), description='经典汉堡')
 chips = Dish('薯条', 8.99, MyIcon.Chips.icon())
 donut = Dish('甜甜圈', 3.5, MyIcon.Donut.icon())
 ice_cream = Dish('冰淇淋', 6.99, MyIcon.IceCream.icon())
-martini = Dish('马蒂尼', 4.5, MyIcon.Martini.icon(), '杯')
+martini = Dish('马蒂尼', 4.5, MyIcon.Martini.icon(), '杯', '其实我也不知道这是什么\n网上找的图标文件名叫Martini')
 milk = Dish('牛奶', 3, MyIcon.Milk.icon(), '瓶')
-noodles = Dish('面条', 12.66, MyIcon.Noodles.icon())
+noodles = Dish('面条', 12.66, MyIcon.Noodles.icon(), '碗')
 pizza = Dish('披萨', 15.88, MyIcon.Pizza.icon())
 
 all_dishes = [burger, noodles, donut, ice_cream, chips, pizza, beer, martini, milk]

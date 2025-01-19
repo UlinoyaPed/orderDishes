@@ -1,3 +1,9 @@
+"""
+    主页组件
+    包括：
+        应用信息卡片
+"""
+
 from PyQt5 import QtCore
 from PyQt5.QtCore import QUrl
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
