@@ -10,7 +10,7 @@
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout
 from qfluentwidgets import ElevatedCardWidget, IconWidget, TitleLabel, CardWidget, TransparentToolButton, FluentIcon, \
-    SubtitleLabel, PrimaryToolButton, StrongBodyLabel, HeaderCardWidget, ToolButton
+    SubtitleLabel, PrimaryToolButton, StrongBodyLabel, HeaderCardWidget, ToolButton, FluentWindow
 
 from dishes import Dish
 
@@ -195,6 +195,7 @@ class GotoCheckOutWidget(HeaderCardWidget):
         self.go_to_checkout_button = PrimaryToolButton(FluentIcon.CHECKBOX.icon())
         self.go_to_checkout_button.setFixedSize(50, 50)
         self.go_to_checkout_button.setToolTip('前往结账')
+        self.go_to_checkout_button.clicked.connect(self.go_to_checkout_button_clicked)
 
         self.hBox = QHBoxLayout()
 
@@ -209,12 +210,14 @@ class GotoCheckOutWidget(HeaderCardWidget):
 
         self.viewLayout.addLayout(self.hBox)
 
+        self.checkout_interface = None
+        self.belonging_window = None
+
     def update_order_info(self):
         """
         更新订单信息
         :return:
         """
-
         # 清空所有的菜品卡片
         while self.dish_card_vBox.count():
             item = self.dish_card_vBox.takeAt(0)
@@ -227,3 +230,21 @@ class GotoCheckOutWidget(HeaderCardWidget):
             if num > 0:
                 ordered_dish_card = OrderedDishCard(dish, num)
                 self.dish_card_vBox.addWidget(ordered_dish_card, 0, QtCore.Qt.AlignTop)
+
+    def set_switch_to_checkout(self, window: FluentWindow, switch_to):
+        """
+        设置切换到结账界面的函数
+        :param window: 所属的窗口
+        :param switch_to: 切换到的界面
+        :return:
+        """
+        self.checkout_interface = switch_to
+        self.belonging_window = window
+
+    def go_to_checkout_button_clicked(self):
+        """
+        前往结账按钮点击事件
+        :return:
+        """
+        if self.checkout_interface is not None and self.belonging_window is not None:
+            self.belonging_window.switchTo(self.checkout_interface)
