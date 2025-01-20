@@ -73,7 +73,7 @@ class OrderInterface(BaseInterface):
 
         for dish in dishes.all_dishes:
             dCard = orderpage.DishCard(dish)
-            dCard.set_update_func(self.goto_checkout_widget.update_order_info)
+            dCard.add_or_subtract_widget.updateRequested.connect(self.goto_checkout_widget.update_order_info)
             self.flowLayout.addWidget(dCard)
 
         self.layout.addWidget(self.goto_checkout_widget, 0, Qt.AlignTop)

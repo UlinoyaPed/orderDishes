@@ -10,7 +10,7 @@
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout
 from qfluentwidgets import ElevatedCardWidget, IconWidget, TitleLabel, CardWidget, TransparentToolButton, FluentIcon, \
-    SubtitleLabel, PrimaryToolButton, StrongBodyLabel, HeaderCardWidget, ToolButton, FluentWindow
+    SubtitleLabel, PrimaryToolButton, StrongBodyLabel, HeaderCardWidget, ToolButton
 
 from dishes import Dish
 
@@ -21,6 +21,8 @@ class AddOrSubtractWidget(ElevatedCardWidget):
     """
     添加或减少菜品数量的部件
     """
+
+    updateRequested = QtCore.pyqtSignal()
 
     def __init__(self, dish: Dish, parent=None):
         """
@@ -61,8 +63,7 @@ class AddOrSubtractWidget(ElevatedCardWidget):
         self.number_label.setText(str(self.num))
         order_dict[self.dish] = self.num
 
-        if self.update_checkout_info_func is not None:
-            self.update_checkout_info_func()
+        self.updateRequested.emit()  # 发出信号
 
     def get_num(self) -> int:
         """
@@ -70,14 +71,6 @@ class AddOrSubtractWidget(ElevatedCardWidget):
         :return: int 菜品的数量
         """
         return self.num
-
-    def set_update_checkout_info(self, func):
-        """
-        设置更新结账信息的函数
-        :param func: 函数
-        :return:
-        """
-        self.update_checkout_info_func = func
 
 
 class DishCard(CardWidget):
@@ -123,15 +116,6 @@ class DishCard(CardWidget):
         self.hBox.addLayout(self.rightVBox, 1)
 
         self.nameLabel.setAlignment(QtCore.Qt.AlignBottom | QtCore.Qt.AlignHCenter)
-
-    def set_update_func(self, func):
-        """
-        设置更新订单信息的函数
-        :param func: 函数
-        :return:
-        """
-        self.update_order_info = func
-        self.add_or_subtract_widget.set_update_checkout_info(self.update_order_info)
 
 
 class OrderedDishCard(ElevatedCardWidget):
