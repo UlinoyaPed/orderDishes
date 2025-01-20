@@ -91,6 +91,8 @@ class CheckoutInterface(BaseInterface):
         self.setObjectName("checkout")
 
     def add_items(self):
+        nullLayout = FlowLayout()
+        self.layout.addLayout(nullLayout, 0)
         self.checkout_card = checkoutpage.CheckoutCard()
         self.layout.addWidget(self.checkout_card, 0, Qt.AlignTop)
 

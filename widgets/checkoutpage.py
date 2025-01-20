@@ -6,7 +6,7 @@
 """
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
-from qfluentwidgets import HeaderCardWidget, ElevatedCardWidget, IconWidget, InfoBarIcon, SubtitleLabel
+from qfluentwidgets import HeaderCardWidget, ElevatedCardWidget, IconWidget, InfoBarIcon, SubtitleLabel, FlowLayout
 
 import coupon
 from myIcons import MyIcon
@@ -115,7 +115,7 @@ class PaymentCard(HeaderCardWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setMinimumHeight(100)
+        self.setFixedHeight(200)
         self.setTitle("支付")
 
         self._total_price: float = 0
@@ -171,9 +171,11 @@ class CheckoutCard(HeaderCardWidget):
         self.viewLayout.addLayout(self.mainVBox)
 
         self.leftVBox.addWidget(self.confirm_checkout_widget, 1, QtCore.Qt.AlignTop)
-        self.rightVBox.addWidget(self.checkout_coupon_card)
+        self.rightVBox.addWidget(self.checkout_coupon_card, 0)
 
         self.rightVBox.addWidget(self.payment_card, 0)
+        nullLayout = FlowLayout()
+        self.rightVBox.addLayout(nullLayout, 1)
 
         self.checkout_coupon_card.updateRequested.connect(self.update_content)
 

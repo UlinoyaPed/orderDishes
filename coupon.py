@@ -166,7 +166,7 @@ class VoucherCoupon(CouponBase):
             return self._total_price
 
 
-all_coupons = [FullReduceCoupon('满100减10券', 100, 10),
-               PercentReduceCoupon('8折券', 0.2),
+all_coupons = [FullReduceCoupon('满200减50券', 200, 50),
+               PercentReduceCoupon('9折券', 0.1),
                VoucherCoupon('10元代金券', 10),
                FullPercentReduceCoupon('满100打8折券', 100, 0.2)]
