@@ -4,7 +4,7 @@
         优惠券卡片
         结账卡片
 """
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
 from qfluentwidgets import HeaderCardWidget, ElevatedCardWidget, IconWidget, InfoBarIcon, SubtitleLabel
 
@@ -15,7 +15,7 @@ from widgets import orderpage
 
 class CouponCardWidget(ElevatedCardWidget):
     """
-    优惠券卡片
+    每个优惠券卡片
     """
     clickedRequested = QtCore.pyqtSignal()
 
@@ -48,11 +48,12 @@ class CouponCardWidget(ElevatedCardWidget):
         """
         if which_icon is None:
             self.status = not self.status
-            which_icon = self.status
-
-        if which_icon:
-            self.status_icon.setIcon(self.okIcon)
         else:
+            self.status = which_icon
+
+        if self.status is True:
+            self.status_icon.setIcon(self.okIcon)
+        if self.status is False:
             self.status_icon.setIcon(self.noIcon)
 
     def mousePressEvent(self, e):
@@ -68,6 +69,7 @@ class CheckoutCouponCard(HeaderCardWidget):
     """
     结账页面优惠券
     """
+    updateRequested = QtCore.pyqtSignal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -84,6 +86,15 @@ class CheckoutCouponCard(HeaderCardWidget):
 
         self.viewLayout.addLayout(self.vBox)
 
+    def get_active_coupon(self):
+        """
+        获取当前激活的优惠券
+        :return: 当前激活的优惠券
+        """
+        for c in self.coupon_card_list:
+            if c.status:
+                return c.coupon_item
+
     def handle_coupon_clicked(self):
         """
         处理优惠券点击事件
@@ -93,7 +104,8 @@ class CheckoutCouponCard(HeaderCardWidget):
             if c is not self.sender():
                 c.switch_status_icon(False)
             else:
-                c.switch_status_icon(True)
+                c.switch_status_icon()
+        self.updateRequested.emit()  # 发出信号
 
 
 class PaymentCard(HeaderCardWidget):
@@ -109,15 +121,25 @@ class PaymentCard(HeaderCardWidget):
         self._total_price: float = 0
         self._reduction: float = 0
         self._required_pay: float = 0
-        self.total_price_label = SubtitleLabel(f"总价: ¥{self._total_price:.2f}")
-        self.reduction_label = SubtitleLabel(f"优惠: ¥{self._reduction:.2f}")
-        self.required_pay_label = SubtitleLabel(f"应付: ¥{self._required_pay:.2f}")
+        self.total_price_label = SubtitleLabel()
+        self.reduction_label = SubtitleLabel()
+        self.required_pay_label = SubtitleLabel()
+        self.set_text_content()
 
         self.vBox = QVBoxLayout()
         self.vBox.addWidget(self.total_price_label, 0, QtCore.Qt.AlignTop)
         self.vBox.addWidget(self.reduction_label, 0, QtCore.Qt.AlignTop)
         self.vBox.addWidget(self.required_pay_label, 0, QtCore.Qt.AlignTop)
         self.viewLayout.addLayout(self.vBox)
+
+    def set_text_content(self, total_price: float = 0, reduction: float = 0, required_pay: float = 0):
+        self._total_price = total_price
+        self._reduction = reduction
+        self._required_pay = required_pay
+        self.total_price_label.setText(f"总价: ¥{self._total_price:.2f}")
+        self.reduction_label.setText(f"优惠: ¥{self._reduction:.2f}")
+        self.required_pay_label.setText(f"应付: ¥{self._required_pay:.2f}")
+
 
 class CheckoutCard(HeaderCardWidget):
     """
@@ -127,7 +149,7 @@ class CheckoutCard(HeaderCardWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setObjectName("checkoutCard")
-        self.setMinimumHeight(300)
+        # self.setMinimumHeight(300)
         self.setContentsMargins(10, 10, 10, 10)
         self.setTitle('结账')
 
@@ -152,3 +174,17 @@ class CheckoutCard(HeaderCardWidget):
         self.rightVBox.addWidget(self.checkout_coupon_card)
 
         self.rightVBox.addWidget(self.payment_card, 0)
+
+        self.checkout_coupon_card.updateRequested.connect(self.update_content)
+
+    def update_content(self):
+        order_dict = orderpage.get_order_dict()
+        active_coupon = self.checkout_coupon_card.get_active_coupon()
+        if active_coupon is not None:
+            total_price = active_coupon.calculate_total_price(order_dict)
+            required_pay = active_coupon.apply(order_dict)
+            reduction = total_price - required_pay
+            self.payment_card.set_text_content(total_price, reduction, required_pay)
+        else:
+            total_price = sum([d.price * order_dict[d] for d in order_dict])
+            self.payment_card.set_text_content(total_price, 0, total_price)

@@ -143,9 +143,12 @@ class MainWindow(MSFluentWindow):
         self.orderInterface.goto_checkout_widget.checkoutRequested.connect(
             lambda: self.switchTo(self.checkoutInterface))  # 设置点餐界面的切换到结账界面
 
-        for dCard in self.orderInterface.all_dish_cards:  # 在点餐界面增减菜品数量时，更新结账界面的信息
+        for dCard in self.orderInterface.all_dish_cards:
+            # 在点餐界面增减菜品数量时，更新结账界面的信息
             dCard.add_or_subtract_widget.updateRequested.connect(
                 self.checkoutInterface.checkout_card.confirm_checkout_widget.update_order_info)
+            dCard.add_or_subtract_widget.updateRequested.connect(
+                self.checkoutInterface.checkout_card.update_content)
 
         self.addSubInterface(self.homeInterface, FluentIcon.HOME, "主页",
                              position=NavigationItemPosition.TOP)  # TOP是指在导航栏的最上方

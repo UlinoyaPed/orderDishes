@@ -30,11 +30,11 @@ class CouponBase:
         """
         raise NotImplementedError
 
-    def calculate_total_price(self, order: dict):
+    def calculate_total_price(self, order: dict) -> float:
         """
         计算总价
         :param order: 订单
-        :return:
+        :return: float 总价
         """
         self._total_price = 0
         for dish, num in order.items():
@@ -42,6 +42,7 @@ class CouponBase:
                 continue
             if num > 0:
                 self._total_price += dish.price * num
+        return self._total_price
 
 
 class FullReduceCoupon(CouponBase):
@@ -156,7 +157,11 @@ class VoucherCoupon(CouponBase):
 
     def apply(self, order):
         if self.check_if_can_apply(order):
-            return self._total_price - self.voucher
+            need_to_pay = self._total_price - self.voucher
+            if need_to_pay < 0:
+                return 0
+            else:
+                return need_to_pay
         else:
             return self._total_price
 

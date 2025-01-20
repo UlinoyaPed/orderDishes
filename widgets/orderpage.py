@@ -17,6 +17,14 @@ from dishes import Dish
 order_dict = {}
 
 
+def get_order_dict() -> dict:
+    """
+    获取订单字典
+    :return: dict 订单字典
+    """
+    return order_dict
+
+
 class AddOrSubtractWidget(ElevatedCardWidget):
     """
     添加或减少菜品数量的部件
