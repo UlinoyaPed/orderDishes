@@ -8,6 +8,7 @@ from qfluentwidgets import HeaderCardWidget
 
 from widgets import orderpage
 
+
 class CheckoutCard(HeaderCardWidget):
     def __init__(self, parent=None):
         super().__init__(parent)

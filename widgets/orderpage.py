@@ -178,10 +178,10 @@ class GotoCheckOutWidget(HeaderCardWidget):
         self.update_button.setToolTip('更新订单信息')
         self.update_button.clicked.connect(self.update_order_info)
 
-        self.go_to_checkout_button = PrimaryToolButton(FluentIcon.CHECKBOX.icon())
-        self.go_to_checkout_button.setFixedSize(50, 50)
-        self.go_to_checkout_button.setToolTip('前往结账')
-        self.go_to_checkout_button.clicked.connect(self.go_to_checkout_button_clicked)
+        self.apply_button = PrimaryToolButton(FluentIcon.CHECKBOX.icon())
+        self.apply_button.setFixedSize(50, 50)
+        self.apply_button.setToolTip('前往结账')
+        self.apply_button.clicked.connect(self.go_to_checkout_button_clicked)
 
         self.hBox = QHBoxLayout()
 
@@ -192,7 +192,7 @@ class GotoCheckOutWidget(HeaderCardWidget):
         self.hBox.addLayout(self.button_vBox, 0)
 
         self.button_vBox.addWidget(self.update_button, 1, QtCore.Qt.AlignBottom)
-        self.button_vBox.addWidget(self.go_to_checkout_button, 0, QtCore.Qt.AlignBottom)
+        self.button_vBox.addWidget(self.apply_button, 0, QtCore.Qt.AlignBottom)
 
         self.viewLayout.addLayout(self.hBox)
 
