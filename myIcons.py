@@ -23,5 +23,7 @@ class MyIcon(Enum):
     Noodles = "Noodles.svg"
     Pizza = "Pizza.svg"
 
+    Coupon = "Coupon.svg"
+
     def icon(self) -> QIcon:
         return QIcon(f'./assets/icons/{self.value}')

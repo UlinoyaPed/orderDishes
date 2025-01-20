@@ -12,8 +12,7 @@ class CouponBase:
         :param name: 名称
         """
         self.name = name
-        self.total_price: float = 0
-        self.is_used = False
+        self._total_price: float = 0
 
     def apply(self, order: dict) -> float:
         """
@@ -37,12 +36,12 @@ class CouponBase:
         :param order: 订单
         :return:
         """
-        self.total_price = 0
+        self._total_price = 0
         for dish, num in order.items():
             if not isinstance(dish, Dish):  # 防止出现非菜品的情况
                 continue
             if num > 0:
-                self.total_price += dish.price * num
+                self._total_price += dish.price * num
 
 
 class FullReduceCoupon(CouponBase):
@@ -63,16 +62,15 @@ class FullReduceCoupon(CouponBase):
 
     def check_if_can_apply(self, order):
         self.calculate_total_price(order)
-        if self.total_price >= self.full:
+        if self._total_price >= self.full:
             return True
         return False
 
     def apply(self, order):
         if self.check_if_can_apply(order):
-            self.is_used = True  # 标记为已使用
-            return self.total_price - self.reduce
+            return self._total_price - self.reduce
         else:
-            return self.total_price
+            return self._total_price
 
 
 class PercentReduceCoupon(CouponBase):
@@ -100,10 +98,9 @@ class PercentReduceCoupon(CouponBase):
 
     def apply(self, order):
         if self.check_if_can_apply(order):
-            self.is_used = True  # 标记为已使用
-            return self.total_price * (1 - self.percent)
+            return self._total_price * (1 - self.percent)
         else:
-            return self.total_price
+            return self._total_price
 
 
 class FullPercentReduceCoupon(PercentReduceCoupon):
@@ -126,16 +123,15 @@ class FullPercentReduceCoupon(PercentReduceCoupon):
 
     def check_if_can_apply(self, order):
         self.calculate_total_price(order)
-        if self.total_price >= self.full:
+        if self._total_price >= self.full:
             return True
         return False
 
     def apply(self, order):
         if self.check_if_can_apply(order):
-            self.is_used = True  # 标记为已使用
-            return self.total_price * (1 - self.percent)
+            return self._total_price * (1 - self.percent)
         else:
-            return self.total_price
+            return self._total_price
 
 
 class VoucherCoupon(CouponBase):
@@ -160,10 +156,9 @@ class VoucherCoupon(CouponBase):
 
     def apply(self, order):
         if self.check_if_can_apply(order):
-            self.is_used = True  # 标记为已使用
-            return self.total_price - self.voucher
+            return self._total_price - self.voucher
         else:
-            return self.total_price
+            return self._total_price
 
 
 all_coupons = [FullReduceCoupon('满100减10券', 100, 10),

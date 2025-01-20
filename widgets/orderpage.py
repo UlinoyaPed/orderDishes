@@ -156,7 +156,7 @@ class OrderedDishCard(ElevatedCardWidget):
         self.hBox.addWidget(self.totalPriceLabel, 1, QtCore.Qt.AlignVCenter | QtCore.Qt.AlignLeft)
 
 
-class GotoCheckOutWidget(HeaderCardWidget):
+class OrderInformationWidget(HeaderCardWidget):
     """
     前往结账的部件
     """
@@ -170,7 +170,7 @@ class GotoCheckOutWidget(HeaderCardWidget):
         """
         super().__init__(parent)
         self.setMinimumHeight(100)
-        self.setMinimumWidth(800)
+        # self.setMinimumWidth(800)
         self.setTitle('订单信息')
 
         self.update_button = ToolButton(FluentIcon.ROTATE.icon())
