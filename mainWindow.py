@@ -133,11 +133,13 @@ class MainWindow(MSFluentWindow):
         # 添加界面
         self.homeInterface = HomeInterface()  # 主页界面
         self.orderInterface = OrderInterface()  # 点餐界面
-        self.checkoutInterface = CheckoutInterface()  # 结算界面
+        self.checkoutInterface = CheckoutInterface()  # 结账界面
         self.settingsInterface = SettingsInterface()  # 设置界面
 
-        self.homeInterface.appCard.set_switch_to_order(self, self.orderInterface)  # 设置主页界面的切换到点餐界面
-        self.orderInterface.goto_checkout_widget.set_switch_to_checkout(self, self.checkoutInterface)  # 设置点餐界面的切换到结算界面
+        self.homeInterface.appCard.startRequested.connect(
+            lambda: self.switchTo(self.orderInterface))  # 设置主页界面的切换到点餐界面
+        self.orderInterface.goto_checkout_widget.checkoutRequested.connect(
+            lambda: self.switchTo(self.checkoutInterface))  # 设置点餐界面的切换到结账界面
 
         self.addSubInterface(self.homeInterface, FluentIcon.HOME, "主页",
                              position=NavigationItemPosition.TOP)  # TOP是指在导航栏的最上方

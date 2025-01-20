@@ -177,6 +177,8 @@ class GotoCheckOutWidget(HeaderCardWidget):
     前往结账的部件
     """
 
+    checkoutRequested = QtCore.pyqtSignal()
+
     def __init__(self, parent=None):
         """
         初始化部件
@@ -210,9 +212,6 @@ class GotoCheckOutWidget(HeaderCardWidget):
 
         self.viewLayout.addLayout(self.hBox)
 
-        self.checkout_interface = None
-        self.belonging_window = None
-
     def update_order_info(self):
         """
         更新订单信息
@@ -231,20 +230,9 @@ class GotoCheckOutWidget(HeaderCardWidget):
                 ordered_dish_card = OrderedDishCard(dish, num)
                 self.dish_card_vBox.addWidget(ordered_dish_card, 0, QtCore.Qt.AlignTop)
 
-    def set_switch_to_checkout(self, window: FluentWindow, switch_to):
-        """
-        设置切换到结账界面的函数
-        :param window: 所属的窗口
-        :param switch_to: 切换到的界面
-        :return:
-        """
-        self.checkout_interface = switch_to
-        self.belonging_window = window
-
     def go_to_checkout_button_clicked(self):
         """
         前往结账按钮点击事件
         :return:
         """
-        if self.checkout_interface is not None and self.belonging_window is not None:
-            self.belonging_window.switchTo(self.checkout_interface)
+        self.checkoutRequested.emit()

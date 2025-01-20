@@ -14,6 +14,9 @@ from myIcons import MyIcon
 
 
 class AppInfoCard(SimpleCardWidget):
+
+    startRequested = QtCore.pyqtSignal()
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setFixedHeight(200)
@@ -48,14 +51,7 @@ class AppInfoCard(SimpleCardWidget):
 
         self.hBoxLayout.addLayout(self.vBoxLayout, 1)
 
-        self.order_interface = None
-        self.belonging_window = None
         self.startButton.clicked.connect(self.start_button_clicked)
 
-    def set_switch_to_order(self, window: FluentWindow, switch_to):
-        self.order_interface = switch_to
-        self.belonging_window = window
-
     def start_button_clicked(self):
-        if self.order_interface is not None and self.belonging_window is not None:
-            self.belonging_window.switchTo(self.order_interface)
+        self.startRequested.emit()
