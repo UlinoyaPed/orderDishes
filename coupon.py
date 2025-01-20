@@ -12,6 +12,7 @@ class CouponBase:
         :param name: 名称
         """
         self.name = name
+        self.requirement = '无'
         self._total_price: float = 0
 
     def apply(self, order: dict) -> float:
@@ -60,6 +61,7 @@ class FullReduceCoupon(CouponBase):
             raise ValueError('full must be greater than reduce')
         self.full = full
         self.reduce = reduce
+        self.requirement = f'消费达到{self.full:.2f}元'
 
     def check_if_can_apply(self, order):
         self.calculate_total_price(order)
@@ -121,6 +123,7 @@ class FullPercentReduceCoupon(PercentReduceCoupon):
         if full < 0:
             raise ValueError('full must be greater than 0')
         self.full = full
+        self.requirement = f'消费达到{self.full:.2f}元'
 
     def check_if_can_apply(self, order):
         self.calculate_total_price(order)

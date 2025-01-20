@@ -6,7 +6,8 @@
 """
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
-from qfluentwidgets import HeaderCardWidget, ElevatedCardWidget, IconWidget, InfoBarIcon, SubtitleLabel, FlowLayout
+from qfluentwidgets import HeaderCardWidget, ElevatedCardWidget, IconWidget, InfoBarIcon, SubtitleLabel, FlowLayout, \
+    Flyout, FlyoutAnimationType
 
 import coupon
 from myIcons import MyIcon
@@ -178,6 +179,22 @@ class CheckoutCard(HeaderCardWidget):
         self.rightVBox.addLayout(nullLayout, 1)
 
         self.checkout_coupon_card.updateRequested.connect(self.update_content)
+        self.checkout_coupon_card.updateRequested.connect(self.show_flyout)
+
+    def show_flyout(self):
+        order_dict = orderpage.get_order_dict()
+        active_coupon = self.checkout_coupon_card.get_active_coupon()
+        if active_coupon is not None:
+            if not active_coupon.check_if_can_apply(order_dict):
+                Flyout.create(
+                    icon=InfoBarIcon.ERROR,
+                    title='您不满足此优惠券的使用条件',
+                    content=f"此优惠券要求：{active_coupon.requirement}",
+                    target=self.checkout_coupon_card,
+                    parent=self,
+                    isClosable=True,
+                    aniType=FlyoutAnimationType.PULL_UP
+                )
 
     def update_content(self):
         order_dict = orderpage.get_order_dict()
