@@ -150,7 +150,7 @@ class OrderedDishCard(ElevatedCardWidget):
         self.dish = dish
         self.num = num
 
-        self.setFixedHeight(100)
+        self.setFixedHeight(80)
 
         self.iconWidget = IconWidget(self.dish.icon)
         self.iconWidget.setFixedSize(50, 50)
@@ -183,7 +183,7 @@ class GotoCheckOutWidget(HeaderCardWidget):
         :param parent: 父部件
         """
         super().__init__(parent)
-        self.setMinimumHeight(300)
+        self.setMinimumHeight(100)
         self.setMinimumWidth(800)
         self.setTitle('订单信息')
 

@@ -13,7 +13,7 @@ class CheckoutCard(SimpleCardWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setObjectName("checkoutCard")
-        self.setFixedSize(250, 300)
+        self.setMinimumHeight(300)
         self.setContentsMargins(10, 10, 10, 10)
         self.total_price: float = 0
 

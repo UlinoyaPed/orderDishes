@@ -22,6 +22,7 @@ class BaseInterface(ScrollArea):
     包含一个垂直布局
     用于添加各种组件
     """
+
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setObjectName("base")
@@ -44,6 +45,7 @@ class HomeInterface(BaseInterface):
     """
     主页界面
     """
+
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setObjectName("home")
@@ -53,39 +55,35 @@ class HomeInterface(BaseInterface):
         self.layout.addWidget(self.appCard, 0, Qt.AlignTop)
 
 
-class OrderInterface(ScrollArea):
+class OrderInterface(BaseInterface):
     """
     点餐界面
     """
+
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setObjectName("order")
-        self.view = QWidget()
-
-        self.layout = FlowLayout(self.view)
-        self.layout.setContentsMargins(5, 5, 5, 10)
-
-        self.add_items()
-
-        self.setWidgetResizable(True)
-        self.enableTransparentBackground()
-        self.setWidget(self.view)
 
     def add_items(self):
+        self.flowLayout = FlowLayout()
+
+        self.layout.addLayout(self.flowLayout, 0)
+
         self.goto_checkout_widget = orderpage.GotoCheckOutWidget()
 
         for dish in dishes.all_dishes:
             dCard = orderpage.DishCard(dish)
             dCard.set_update_func(self.goto_checkout_widget.update_order_info)
-            self.layout.addWidget(dCard)
+            self.flowLayout.addWidget(dCard)
 
-        self.layout.addWidget(self.goto_checkout_widget)
+        self.layout.addWidget(self.goto_checkout_widget, 0, Qt.AlignTop)
 
 
 class CheckoutInterface(BaseInterface):
     """
     结算界面
     """
+
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setObjectName("checkout")
@@ -99,6 +97,7 @@ class SettingsInterface(BaseInterface):
     """
     设置界面
     """
+
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setObjectName("settings")
@@ -118,6 +117,7 @@ class MainWindow(MSFluentWindow):
     """
     主窗口
     """
+
     def __init__(self):
         super().__init__()
 
