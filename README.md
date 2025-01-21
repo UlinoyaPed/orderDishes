@@ -61,7 +61,7 @@ pip install PyQt-Fluent-Widgets -i https://pypi.org/simple/
 - 资源 [assets 目录](assets)
   - [icons](assets/icons) 目录: 包含应用程序的图标资源。
 
-# 许可证 📄
+## 许可证 📄
 
 本项目使用 [GPLv3](LICENSE.txt) 许可证。
 
