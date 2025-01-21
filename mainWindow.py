@@ -8,12 +8,12 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QApplication
 from qfluentwidgets import FluentIcon, NavigationItemPosition, MSFluentWindow, ScrollArea, OptionsSettingCard, \
-    FlowLayout
+    FlowLayout, CustomColorSettingCard
 
 import dishes
 from config import MyConfig
 from myIcons import MyIcon
-from widgets import homepage, orderpage, checkoutpage
+from widgets import homepage, orderpage, checkoutpage, settingspage
 
 
 class BaseInterface(ScrollArea):
@@ -107,6 +107,7 @@ class SettingsInterface(BaseInterface):
         self.setObjectName("settings")
 
     def add_items(self):
+        self.nullLayout = FlowLayout()
         self.switch_dark_mode_card = OptionsSettingCard(
             MyConfig.themeMode,
             FluentIcon.BRUSH,
@@ -114,7 +115,16 @@ class SettingsInterface(BaseInterface):
             "调整你的应用外观",
             texts=["浅色", "深色", "跟随系统设置"],
         )
+
+        self.themeColorCard = CustomColorSettingCard(
+            MyConfig.themeColor,
+            FluentIcon.PALETTE,
+            '主题色',
+            '调整应用的主题色'
+        )
         self.layout.addWidget(self.switch_dark_mode_card, 0, Qt.AlignTop)
+        self.layout.addWidget(self.themeColorCard, 0, Qt.AlignTop)
+        self.layout.addLayout(self.nullLayout, 1)
 
 
 class MainWindow(MSFluentWindow):

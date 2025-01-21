@@ -30,6 +30,8 @@ Python 版本最低 `3.7`
 
 ```bash
 pip install PyQt-Fluent-Widgets -i https://pypi.org/simple/
+
+python main.py
 ```
 
 ## 截图
