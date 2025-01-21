@@ -5,4 +5,5 @@ pyinstaller -D -w -i .\assets\icons\Burger.png .\main.py
 Copy-Item .\assets .\dist\main\assets -recurse
 
 # 重命名dist目录下的main文件夹为新的名称
+Remove-Item -Path .\dist\orderDishes -recurse
 Rename-Item -Path .\dist\main -NewName "orderDishes"
