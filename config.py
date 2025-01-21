@@ -1,4 +1,4 @@
-from qfluentwidgets import *
+from qfluentwidgets import QConfig, qconfig
 
 
 class MyConfig(QConfig):
