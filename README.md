@@ -1,11 +1,11 @@
-<div style="text-align: center">
+<h1 align="center">orderDishes</h1>
 
-<h1>orderDishes</h1>
+<div align="center">
 
-<p style="font-weight: bold">点餐系统</p>
+<p>点餐系统</p>
 
-![GitHub last commit](https://img.shields.io/github/last-commit/UlinoyaPed/orderDishes?label=%E6%9C%80%E8%BF%91%E6%8F%90%E4%BA%A4)
-![GitHub repo size](https://img.shields.io/github/repo-size/UlinoyaPed/orderDishes)
+![GitHub Created At](https://img.shields.io/github/created-at/UlinoyaPed/orderDishes?color=green)
+![Python Version](https://img.shields.io/badge/python-%3E%3D3.7-blue)
 ![GitHub License](https://img.shields.io/github/license/UlinoyaPed/orderDishes)
 
 </div>
