@@ -65,4 +65,4 @@ pip install PyQt-Fluent-Widgets -i https://pypi.org/simple/
 
 本项目使用 [GPLv3](LICENSE.txt) 许可证。
 
-版权所有 © 2021 by UlinoyaPed
+版权所有 © 2025 by UlinoyaPed
