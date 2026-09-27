@@ -12,17 +12,17 @@ class Dish:
         self.name = name
         self.price = price
         self.icon = icon
-        self.description = description
         self.unit = unit
+        self.description = description
 
 
-beer = Dish('啤酒', 5.78, MyIcon.Beer.icon(), '听', '精酿小麦果汁\n不保证不挨处分')
+beer = Dish('啤酒', 5.78, MyIcon.Beer.icon(), '听', description='精酿小麦果汁\n不保证不挨处分')
 burger = Dish('汉堡', 20, MyIcon.Burger.icon(), description='经典汉堡')
 chips = Dish('薯条', 9.5, MyIcon.Chips.icon())
 donut = Dish('甜甜圈', 3.5, MyIcon.Donut.icon(), '个')
 ice_cream = Dish('冰淇淋', 13.5, MyIcon.IceCream.icon())
-martini = Dish('马蒂尼', 4.5, MyIcon.Martini.icon(), '杯', '其实我也不知道这是什么\n网上找的图标文件名叫Martini')
-milk = Dish('牛奶', 3, MyIcon.Milk.icon(), '瓶', '(防御 +2)')
+martini = Dish('马提尼', 4.5, MyIcon.Martini.icon(), '杯', description='金酒与干苦艾酒\n调制的经典鸡尾酒\n可加橄榄或柠檬皮')
+milk = Dish('牛奶', 3, MyIcon.Milk.icon(), '瓶', description='(防御 +2)')
 noodles = Dish('面条', 12.66, MyIcon.Noodles.icon(), '碗')
 pizza = Dish('披萨', 15.88, MyIcon.Pizza.icon())
 
